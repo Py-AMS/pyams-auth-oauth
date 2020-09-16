@@ -1,0 +1,150 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE 1.0\n"
+"POT-Creation-Date: 2020-09-16 23:19+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Lingua 3.10.dev0\n"
+
+#: src/pyams_auth_oauth/interfaces.py:51
+msgid "Enable OAuth login?"
+msgstr "Activer la connexion OAuth/OAuth2 ?"
+
+#: src/pyams_auth_oauth/interfaces.py:52
+msgid "Enable login via OAuth authentication"
+msgstr "Activer l'authentification via un fournisseur OAuth"
+
+#: src/pyams_auth_oauth/interfaces.py:56
+msgid "OAuth users folder"
+msgstr "Dossier d'utilisateurs"
+
+#: src/pyams_auth_oauth/interfaces.py:57
+msgid ""
+"Name of folder used to store properties of users authenticated with OAuth"
+msgstr ""
+"Nom du dossier utilisé pour stocker les propriétés des utilisateurs "
+"authentifiés via OAuth"
+
+#: src/pyams_auth_oauth/interfaces.py:69
+msgid "Authomatic secret"
+msgstr "Code secret"
+
+#: src/pyams_auth_oauth/interfaces.py:70
+msgid "This secret phrase is used to encrypt Authomatic cookie"
+msgstr ""
+"Ce code secret est utilisé pour l'encryptage des cookies d'authentification"
+
+#: src/pyams_auth_oauth/interfaces.py:75
+msgid "Use OAuth popup?"
+msgstr "Utiliser une popup de connexion ?"
+
+#: src/pyams_auth_oauth/interfaces.py:76
+msgid "If 'yes', a connection popup will be used"
+msgstr "Si 'oui', la connexion à votre fournisseur se fera via une popup"
+
+#: src/pyams_auth_oauth/interfaces.py:122
+msgid "Provider name"
+msgstr "Nom du fournisseur"
+
+#: src/pyams_auth_oauth/interfaces.py:126
+msgid "Provider ID"
+msgstr "ID du fournisseur"
+
+#: src/pyams_auth_oauth/interfaces.py:127
+msgid "This value should be unique between all providers"
+msgstr ""
+"Cette valeur doit être unique entre tous les fournisseurs d'authentification "
+"déclarés"
+
+#: src/pyams_auth_oauth/interfaces.py:131
+msgid "Provider consumer key"
+msgstr "Clé consommateur"
+
+#: src/pyams_auth_oauth/interfaces.py:132
+msgid "This consumer key is given by your OAuth provider..."
+msgstr ""
+"Cette clé consommateur est donnée par votre fournisseur d'authentification..."
+
+#: src/pyams_auth_oauth/interfaces.py:135
+msgid "Provider secret"
+msgstr "Clé secrète"
+
+#: src/pyams_auth_oauth/interfaces.py:136
+msgid "This secret key is given by your OAuth provider..."
+msgstr ""
+"Cette clé secrète est donnée par votre fournisseur d'authentification..."
+
+#: src/pyams_auth_oauth/interfaces.py:159
+msgid "Internal provider ID"
+msgstr "ID interne"
+
+#: src/pyams_auth_oauth/interfaces.py:161
+msgid "OAuth provider name"
+msgstr "Nom du fournisseur"
+
+#: src/pyams_auth_oauth/interfaces.py:163
+msgid "User name"
+msgstr "Code utilisateur"
+
+#: src/pyams_auth_oauth/interfaces.py:166
+msgid "Name"
+msgstr "Nom"
+
+#: src/pyams_auth_oauth/interfaces.py:168
+msgid "First name"
+msgstr "Prénom"
+
+#: src/pyams_auth_oauth/interfaces.py:171
+msgid "Last name"
+msgstr "Nom de famille"
+
+#: src/pyams_auth_oauth/interfaces.py:174
+msgid "Nickname"
+msgstr "Surnom"
+
+#: src/pyams_auth_oauth/interfaces.py:177
+msgid "E-mail address"
+msgstr "Adresse mail"
+
+#: src/pyams_auth_oauth/interfaces.py:180
+msgid "Timezone"
+msgstr "Fuseau horaire"
+
+#: src/pyams_auth_oauth/interfaces.py:183
+msgid "Country"
+msgstr "Pays"
+
+#: src/pyams_auth_oauth/interfaces.py:186
+msgid "City"
+msgstr "Ville"
+
+#: src/pyams_auth_oauth/interfaces.py:189
+msgid "Postal code"
+msgstr "Code postal"
+
+#: src/pyams_auth_oauth/interfaces.py:192
+msgid "Locale code"
+msgstr "Code de locale"
+
+#: src/pyams_auth_oauth/interfaces.py:195
+msgid "Picture URL"
+msgstr "URL de l'image"
+
+#: src/pyams_auth_oauth/interfaces.py:198
+msgid "Birth date"
+msgstr "Date de naissance"
+
+#: src/pyams_auth_oauth/interfaces.py:201
+msgid "Registration date"
+msgstr "Date d'enregistrement"
+
+#: src/pyams_auth_oauth/interfaces.py:66
+msgid "You can't activate OAuth login without selecting an OAuth users folder"
+msgstr ""
+"Vous devez sélectionner un dossier de stockage des profils utilisateurs pour "
+"pouvoir activer l'authentification OAuth"
