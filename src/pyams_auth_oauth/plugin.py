@@ -10,7 +10,7 @@
 # FOR A PARTICULAR PURPOSE.
 #
 
-"""PyAMS_security.plugin.oauth module
+"""PyAMS_auth_oauth.plugin module
 
 This module is used to handle OAuth authentication.
 """

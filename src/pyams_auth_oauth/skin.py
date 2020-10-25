@@ -10,7 +10,7 @@
 # FOR A PARTICULAR PURPOSE.
 #
 
-"""PyAMS_security.skin.oauth module
+"""PyAMS_auth_oauth.skin module
 
 This module provides a login view for OAuth authentication.
 Please note that this login method requires additional components provided by PyAMS_security_skin

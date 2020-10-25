@@ -37,30 +37,32 @@ The package relies on Python "Authomatic" package.
     Upgrading PyAMS timezone to generation 1...
     Upgrading PyAMS security to generation 1...
 
-    >>> from pyramid.authorization import ACLAuthorizationPolicy
-    >>> config.set_authorization_policy(ACLAuthorizationPolicy())
-    >>> from pyams_security.utility import PyAMSAuthenticationPolicy
-    >>> policy = PyAMSAuthenticationPolicy(secret='my secret',
-    ...                                    http_only=True,
-    ...                                    secure=False)
-    >>> config.set_authentication_policy(policy)
-
     >>> from zope.traversing.interfaces import BeforeTraverseEvent
     >>> from pyramid.threadlocal import manager
     >>> from pyams_utils.registry import handle_site_before_traverse
     >>> handle_site_before_traverse(BeforeTraverseEvent(app, request))
     >>> manager.push({'request': request, 'registry': config.registry})
 
+
+Using PyAMS security policy
+---------------------------
+
+The plugin should be included correctly into PyAMS security policy:
+
+    >>> from pyramid.authorization import ACLAuthorizationPolicy
+    >>> config.set_authorization_policy(ACLAuthorizationPolicy())
+
+    >>> from pyams_security.policy import PyAMSAuthenticationPolicy
+    >>> policy = PyAMSAuthenticationPolicy(secret='my secret',
+    ...                                    http_only=True,
+    ...                                    secure=False)
+    >>> config.set_authentication_policy(policy)
+
     >>> from pyams_security.interfaces import ISecurityManager
     >>> from pyams_utils.registry import get_utility
     >>> sm = get_utility(ISecurityManager)
     >>> sm
     <...SecurityManager object at 0x...>
-
-    >>> from pyams_utils.factory import register_factory
-    >>> from pyams_auth_oauth.interfaces import IOAuthSecurityConfiguration
-    >>> from pyams_auth_oauth.plugin import OAuthSecurityConfiguration
-    >>> register_factory(IOAuthSecurityConfiguration, OAuthSecurityConfiguration)
 
 
 Using OAuth authentication
@@ -74,6 +76,11 @@ on at least one OAuth authentication provider, which will give you a public and 
 then, register these provider settings into the security manager, and create a "OAuth users
 folder", which will be used to store properties of principals which have been authenticated with
 an OAuth provider; and finally, activate these settings into the security manager:
+
+    >>> from pyams_utils.factory import register_factory
+    >>> from pyams_auth_oauth.interfaces import IOAuthSecurityConfiguration
+    >>> from pyams_auth_oauth.plugin import OAuthSecurityConfiguration
+    >>> register_factory(IOAuthSecurityConfiguration, OAuthSecurityConfiguration)
 
     >>> from pyams_auth_oauth.plugin import OAuthLoginProviderConnection
     >>> github_provider = OAuthLoginProviderConnection()
@@ -102,6 +109,7 @@ an OAuth provider; and finally, activate these settings into the security manage
     >>> oauth_folder.prefix = 'oauth'
     >>> oauth_folder.title = 'OAuth principals'
     >>> sm['oauth'] = oauth_folder
+
     >>> oauth_folder in sm.credentials_plugins
     False
     >>> oauth_folder in sm.authentication_plugins
