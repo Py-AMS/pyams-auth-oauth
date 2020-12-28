@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.1.1
+-----
+ - updated package description for Pypi upload...
+
 1.1.0
 -----
  - added OAuth plugin configuration interface
