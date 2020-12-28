@@ -1,6 +1,6 @@
-===================
-PyAMS OAuth authentication package package
-===================
+==================================
+PyAMS OAuth authentication package
+==================================
 
 .. contents::
 
