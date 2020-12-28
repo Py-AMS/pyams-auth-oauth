@@ -1,6 +1,12 @@
 Changelog
 =========
 
+1.1.0
+-----
+ - added OAuth plugin configuration interface
+ - added registered OAuth providers to login view
+ - updated plugin configuration
+
 1.0.0
 -----
  - initial release

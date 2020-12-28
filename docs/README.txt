@@ -24,6 +24,7 @@ What is PyAMS OAuth authentication package?
 ===========================================
 
 This package is a plug-in for PyAMS security policy; it allows to authenticate application
-users via an OAuth or OAuth2 authentication provider.
+users via an OAuth or OAuth2 authentication providers.
 
-You have to include this package in your Pyramid configuration to activate this plug-in.
+You have to include this package in your Pyramid configuration to activate this plug-in, but also
+to register providers for which you want to allow access from.
