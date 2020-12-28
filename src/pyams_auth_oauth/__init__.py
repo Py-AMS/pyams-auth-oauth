@@ -10,7 +10,7 @@
 # FOR A PARTICULAR PURPOSE.
 #
 
-"""PyAMS OAuth authentication package package
+"""PyAMS OAuth authentication package
 
 PyAMS security plug-in for OAuth authentication
 """

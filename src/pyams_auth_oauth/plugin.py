@@ -15,6 +15,7 @@
 This module is used to handle OAuth authentication.
 """
 
+import json
 from datetime import datetime
 
 from authomatic.providers import oauth1, oauth2
@@ -59,7 +60,7 @@ class OAuthSecurityConfiguration(Persistent, Contained):
     use_login_popup = FieldProperty(IOAuthSecurityConfiguration['use_login_popup'])
 
 
-@adapter_config(context=ISecurityManager, provides=IOAuthSecurityConfiguration)
+@adapter_config(required=ISecurityManager, provides=IOAuthSecurityConfiguration)
 def security_manager_oauth_configuration_factory(context):
     """Security manager OAuth configuration factory adapter"""
     return get_annotation_adapter(context, OAUTH_CONFIGURATION_KEY, IOAuthSecurityConfiguration)
@@ -69,7 +70,7 @@ def security_manager_oauth_configuration_factory(context):
 # OAuth user
 #
 
-@implementer(IOAuthUser)
+@factory_config(IOAuthUser)
 class OAuthUser(Persistent, Contained):
     # pylint: disable=too-many-instance-attributes
     """OAuth user persistent class"""
@@ -111,7 +112,7 @@ class OAuthUser(Persistent, Contained):
                                              provider=self.provider_name.capitalize())
 
 
-@adapter_config(context=IOAuthUser, provides=IPrincipalInfo)
+@adapter_config(required=IOAuthUser, provides=IPrincipalInfo)
 def oauth_user_principal_adapter(user):
     """OAuth user principal info adapter"""
     return PrincipalInfo(id="{}:{}".format(user.__parent__.prefix, user.user_id),
@@ -122,7 +123,7 @@ def oauth_user_principal_adapter(user):
 # OAuth users folder
 #
 
-@implementer(IOAuthUsersFolderPlugin)
+@factory_config(IOAuthUsersFolderPlugin)
 class OAuthUsersFolder(Folder):
     """OAuth users folder"""
 
@@ -195,7 +196,7 @@ class OAuthUsersFolderVocabulary(SimpleVocabulary):
         super(OAuthUsersFolderVocabulary, self).__init__(terms)
 
 
-@subscriber(IAuthenticatedPrincipalEvent, plugin_selector=IOAuthUsersFolderPlugin)
+@subscriber(IAuthenticatedPrincipalEvent, plugin_selector='oauth')
 def handle_authenticated_oauth_principal(event):  # pylint: disable=invalid-name
     """Handle authenticated OAuth principal"""
     manager = get_utility(ISecurityManager)
@@ -417,17 +418,20 @@ class OAuthLoginConfiguration(Folder):
         result = {}
         for provider in self.values():
             provider_info = get_provider_info(provider.provider_name)
-            result[provider.provider_name] = {
+            provider_dict = {
                 'id': provider.provider_id,
                 'class_': provider_info.provider,
                 'consumer_key': provider.consumer_key,
                 'consumer_secret': provider.consumer_secret,
                 'scope': provider_info.scope
             }
+            if provider.access_headers:
+                provider_dict['access_headers'] = json.loads(provider.access_headers)
+            result[provider.provider_name] = provider_dict
         return result
 
 
-@adapter_config(context=ISecurityManager, provides=IOAuthLoginConfiguration)
+@adapter_config(required=ISecurityManager, provides=IOAuthLoginConfiguration)
 def oauth_login_configuration_adapter(context):  # pylint: disable=invalid-name
     """OAuth login configuration adapter"""
     return get_annotation_adapter(context, OAUTH_LOGIN_CONFIGURATION_KEY,
@@ -435,7 +439,7 @@ def oauth_login_configuration_adapter(context):  # pylint: disable=invalid-name
                                   name='++oauth-config++')
 
 
-@adapter_config(name='oauth-config', context=ISecurityManager, provides=ITraversable)
+@adapter_config(name='oauth-config', required=ISecurityManager, provides=ITraversable)
 class SecurityManagerOAuthTraverser(ContextAdapter):
     """++oauth-config++ namespace traverser"""
 
@@ -444,14 +448,15 @@ class SecurityManagerOAuthTraverser(ContextAdapter):
         return IOAuthLoginConfiguration(self.context)
 
 
-@implementer(IOAuthLoginProviderConnection)
+@factory_config(IOAuthLoginProviderConnection)
 class OAuthLoginProviderConnection(Persistent):
     """OAuth login provider connection"""
 
-    provider_name = FieldProperty(IOAuthLoginProviderConnection['provider_name'])
     provider_id = FieldProperty(IOAuthLoginProviderConnection['provider_id'])
+    provider_name = FieldProperty(IOAuthLoginProviderConnection['provider_name'])
     consumer_key = FieldProperty(IOAuthLoginProviderConnection['consumer_key'])
     consumer_secret = FieldProperty(IOAuthLoginProviderConnection['consumer_secret'])
+    access_headers = FieldProperty(IOAuthLoginProviderConnection['access_headers'])
 
     def get_configuration(self):
         """Get OAuth configuration of given provider"""

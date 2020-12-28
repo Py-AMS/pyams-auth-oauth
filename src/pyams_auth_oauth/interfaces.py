@@ -16,9 +16,8 @@
 
 from zope.annotation import IAttributeAnnotatable
 from zope.container.constraints import containers, contains
-from zope.interface import Attribute, Interface, invariant
-from zope.interface.interfaces import Invalid
-from zope.schema import Bool, Choice, Datetime, Int, List, TextLine
+from zope.interface import Attribute, Interface, Invalid, invariant
+from zope.schema import Bool, Choice, Datetime, Int, List, Text, TextLine
 
 from pyams_security.interfaces import IDirectorySearchPlugin
 
@@ -119,14 +118,15 @@ class IOAuthLoginProviderConnection(Interface):
 
     containers(IOAuthLoginConfiguration)
 
-    provider_name = Choice(title=_("Provider name"),
-                           vocabulary=OAUTH_PROVIDERS_VOCABULARY_NAME,
-                           required=True)
-
     provider_id = Int(title=_("Provider ID"),
                       description=_("This value should be unique between all providers"),
                       required=True,
+                      readonly=True,
                       min=0)
+
+    provider_name = Choice(title=_("Provider name"),
+                           vocabulary=OAUTH_PROVIDERS_VOCABULARY_NAME,
+                           required=True)
 
     consumer_key = TextLine(title=_("Provider consumer key"),
                             description=_("This consumer key is given by your OAuth provider..."),
@@ -136,6 +136,11 @@ class IOAuthLoginProviderConnection(Interface):
                                description=_("This secret key is given by your OAuth "
                                              "provider..."),
                                required=True)
+
+    access_headers = Text(title=_("Access headers"),
+                          description=_("Some providers require custom headers; you can enter "
+                                        "them in JSON format..."),
+                          required=False)
 
     def get_configuration(self):
         """Get provider configuration"""

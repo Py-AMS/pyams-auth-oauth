@@ -10,9 +10,9 @@
 # FOR A PARTICULAR PURPOSE.
 #
 
-"""PyAMS OAuth authentication package.include module
+"""PyAMS OAuth authentication package include module
 
-This module is used for Pyramid integration
+This module is used for Pyramid integration.
 """
 
 
@@ -26,6 +26,10 @@ def include_package(config):
     config.add_translation_dirs('pyams_auth_oauth:locales')
 
     # add login route
-    config.add_route('oauth_login', '/api/login/oauth/{provider_name}')
+    config.add_route('oauth_login', '/api/auth/oauth/{provider_name}')
 
-    config.scan()
+    try:
+        import pyams_zmi  # pylint: disable=import-outside-toplevel,unused-import
+        config.scan()
+    except ImportError:
+        config.scan(ignore='pyams_auth_oauth.zmi')

@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE 1.0\n"
-"POT-Creation-Date: 2020-09-16 23:19+0200\n"
+"POT-Creation-Date: 2020-12-25 22:51+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,49 +16,49 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Lingua 3.10.dev0\n"
 
-#: ./src/pyams_auth_oauth/interfaces.py:51
+#: ./src/pyams_auth_oauth/interfaces.py:50
 msgid "Enable OAuth login?"
 msgstr ""
 
-#: ./src/pyams_auth_oauth/interfaces.py:52
+#: ./src/pyams_auth_oauth/interfaces.py:51
 msgid "Enable login via OAuth authentication"
 msgstr ""
 
-#: ./src/pyams_auth_oauth/interfaces.py:56
+#: ./src/pyams_auth_oauth/interfaces.py:55
 msgid "OAuth users folder"
 msgstr ""
 
-#: ./src/pyams_auth_oauth/interfaces.py:57
+#: ./src/pyams_auth_oauth/interfaces.py:56
 msgid ""
 "Name of folder used to store properties of users authenticated with OAuth"
 msgstr ""
 
-#: ./src/pyams_auth_oauth/interfaces.py:69
+#: ./src/pyams_auth_oauth/interfaces.py:68
 msgid "Authomatic secret"
 msgstr ""
 
-#: ./src/pyams_auth_oauth/interfaces.py:70
+#: ./src/pyams_auth_oauth/interfaces.py:69
 msgid "This secret phrase is used to encrypt Authomatic cookie"
 msgstr ""
 
-#: ./src/pyams_auth_oauth/interfaces.py:75
+#: ./src/pyams_auth_oauth/interfaces.py:74
 msgid "Use OAuth popup?"
 msgstr ""
 
-#: ./src/pyams_auth_oauth/interfaces.py:76
+#: ./src/pyams_auth_oauth/interfaces.py:75
 msgid "If 'yes', a connection popup will be used"
 msgstr ""
 
-#: ./src/pyams_auth_oauth/interfaces.py:122
-msgid "Provider name"
-msgstr ""
-
-#: ./src/pyams_auth_oauth/interfaces.py:126
+#: ./src/pyams_auth_oauth/interfaces.py:121
 msgid "Provider ID"
 msgstr ""
 
-#: ./src/pyams_auth_oauth/interfaces.py:127
+#: ./src/pyams_auth_oauth/interfaces.py:122
 msgid "This value should be unique between all providers"
+msgstr ""
+
+#: ./src/pyams_auth_oauth/interfaces.py:127
+msgid "Provider name"
 msgstr ""
 
 #: ./src/pyams_auth_oauth/interfaces.py:131
@@ -77,70 +77,169 @@ msgstr ""
 msgid "This secret key is given by your OAuth provider..."
 msgstr ""
 
-#: ./src/pyams_auth_oauth/interfaces.py:159
+#: ./src/pyams_auth_oauth/interfaces.py:140
+msgid "Access headers"
+msgstr ""
+
+#: ./src/pyams_auth_oauth/interfaces.py:141
+msgid ""
+"Some providers require custom headers; you can enter them in JSON format..."
+msgstr ""
+
+#: ./src/pyams_auth_oauth/interfaces.py:164
 msgid "Internal provider ID"
 msgstr ""
 
-#: ./src/pyams_auth_oauth/interfaces.py:161
+#: ./src/pyams_auth_oauth/interfaces.py:166
 msgid "OAuth provider name"
 msgstr ""
 
-#: ./src/pyams_auth_oauth/interfaces.py:163
+#: ./src/pyams_auth_oauth/interfaces.py:168
 msgid "User name"
 msgstr ""
 
-#: ./src/pyams_auth_oauth/interfaces.py:166
+#: ./src/pyams_auth_oauth/interfaces.py:171
+#: ./src/pyams_auth_oauth/zmi/folder.py:160
 msgid "Name"
 msgstr ""
 
-#: ./src/pyams_auth_oauth/interfaces.py:168
+#: ./src/pyams_auth_oauth/interfaces.py:173
 msgid "First name"
 msgstr ""
 
-#: ./src/pyams_auth_oauth/interfaces.py:171
+#: ./src/pyams_auth_oauth/interfaces.py:176
 msgid "Last name"
 msgstr ""
 
-#: ./src/pyams_auth_oauth/interfaces.py:174
+#: ./src/pyams_auth_oauth/interfaces.py:179
 msgid "Nickname"
 msgstr ""
 
-#: ./src/pyams_auth_oauth/interfaces.py:177
+#: ./src/pyams_auth_oauth/interfaces.py:182
 msgid "E-mail address"
 msgstr ""
 
-#: ./src/pyams_auth_oauth/interfaces.py:180
+#: ./src/pyams_auth_oauth/interfaces.py:185
 msgid "Timezone"
 msgstr ""
 
-#: ./src/pyams_auth_oauth/interfaces.py:183
+#: ./src/pyams_auth_oauth/interfaces.py:188
 msgid "Country"
 msgstr ""
 
-#: ./src/pyams_auth_oauth/interfaces.py:186
+#: ./src/pyams_auth_oauth/interfaces.py:191
 msgid "City"
 msgstr ""
 
-#: ./src/pyams_auth_oauth/interfaces.py:189
+#: ./src/pyams_auth_oauth/interfaces.py:194
 msgid "Postal code"
 msgstr ""
 
-#: ./src/pyams_auth_oauth/interfaces.py:192
+#: ./src/pyams_auth_oauth/interfaces.py:197
 msgid "Locale code"
 msgstr ""
 
-#: ./src/pyams_auth_oauth/interfaces.py:195
+#: ./src/pyams_auth_oauth/interfaces.py:200
 msgid "Picture URL"
 msgstr ""
 
-#: ./src/pyams_auth_oauth/interfaces.py:198
+#: ./src/pyams_auth_oauth/interfaces.py:203
 msgid "Birth date"
 msgstr ""
 
-#: ./src/pyams_auth_oauth/interfaces.py:201
+#: ./src/pyams_auth_oauth/interfaces.py:206
+#: ./src/pyams_auth_oauth/zmi/folder.py:186
 msgid "Registration date"
 msgstr ""
 
-#: ./src/pyams_auth_oauth/interfaces.py:66
+#: ./src/pyams_auth_oauth/interfaces.py:65
 msgid "You can't activate OAuth login without selecting an OAuth users folder"
+msgstr ""
+
+#: ./src/pyams_auth_oauth/zmi/provider.py:64
+msgid "OAuth providers"
+msgstr ""
+
+#: ./src/pyams_auth_oauth/zmi/provider.py:99
+msgid "ID"
+msgstr ""
+
+#: ./src/pyams_auth_oauth/zmi/provider.py:111
+msgid "Provider"
+msgstr ""
+
+#: ./src/pyams_auth_oauth/zmi/provider.py:130
+msgid "Registered OAuth providers"
+msgstr ""
+
+#: ./src/pyams_auth_oauth/zmi/provider.py:141
+msgid ""
+"You can provide as many OAuth connections as you want.\n"
+"Each connection must have a unique integer ID.\n"
+msgstr ""
+
+#: ./src/pyams_auth_oauth/zmi/provider.py:179
+msgid "Add provider"
+msgstr ""
+
+#: ./src/pyams_auth_oauth/zmi/provider.py:198
+#: ./src/pyams_auth_oauth/zmi/plugin.py:63
+msgid "Security manager"
+msgstr ""
+
+#: ./src/pyams_auth_oauth/zmi/provider.py:199
+msgid "Add OAuth provider"
+msgstr ""
+
+#: ./src/pyams_auth_oauth/zmi/provider.py:246
+msgid "OAuth provider properties"
+msgstr ""
+
+#: ./src/pyams_auth_oauth/zmi/provider.py:221
+msgid "This provider ID is already used!"
+msgstr ""
+
+#: ./src/pyams_auth_oauth/zmi/provider.py:261
+msgid "Invalid JSON data for access headers!"
+msgstr ""
+
+#: ./src/pyams_auth_oauth/zmi/plugin.py:53
+#: ./src/pyams_auth_oauth/zmi/plugin.py:64
+msgid "OAuth configuration"
+msgstr ""
+
+#: ./src/pyams_auth_oauth/zmi/plugin.py:91
+msgid ""
+"OAuth authentication module provides features and a REST API which can be used to authenticate principals using external OAuth providers.\n"
+"\n"
+"Activating this option will require additional configuration to create a dedicated users folder to store profiles of users which will be registered using this protocol; you will also have to register API keys for providers that you want to allow connection from, before recording them in the security manager...\n"
+msgstr ""
+
+#: ./src/pyams_auth_oauth/zmi/folder.py:60
+msgid "Add OAuth users folder..."
+msgstr ""
+
+#: ./src/pyams_auth_oauth/zmi/folder.py:70
+msgid "Add OAuth users folder plug-in"
+msgstr ""
+
+#: ./src/pyams_auth_oauth/zmi/folder.py:79
+msgid "OAuth users folder plug-in"
+msgstr ""
+
+#: ./src/pyams_auth_oauth/zmi/folder.py:90
+#: ./src/pyams_auth_oauth/zmi/folder.py:103
+msgid "Users search form"
+msgstr ""
+
+#: ./src/pyams_auth_oauth/zmi/folder.py:173
+msgid "Mail address"
+msgstr ""
+
+#: ./src/pyams_auth_oauth/zmi/folder.py:206
+msgid "Search results"
+msgstr ""
+
+#: ./src/pyams_auth_oauth/zmi/folder.py:231
+msgid "User properties"
 msgstr ""

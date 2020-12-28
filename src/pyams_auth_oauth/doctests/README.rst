@@ -35,7 +35,7 @@ The package relies on Python "Authomatic" package.
     >>> request = DummyRequest()
     >>> app = upgrade_site(request)
     Upgrading PyAMS timezone to generation 1...
-    Upgrading PyAMS security to generation 1...
+    Upgrading PyAMS security to generation 2...
 
     >>> from zope.traversing.interfaces import BeforeTraverseEvent
     >>> from pyramid.threadlocal import manager
@@ -150,6 +150,9 @@ We can now simulate an Authomatic provider response:
     >>> class LoginUser:
     ...     id = 'github_user_id'
     ...     name = 'Jon Doe'
+    ...     def __getattr__(self, item):
+    ...         return self.__dict__.get(item, None)
+
     >>> class LoginResponse:
     ...     error = None
     ...     user = LoginUser()
@@ -174,7 +177,6 @@ As we can't rely on this provider, we will "simulate" a correct login:
     >>> class Result:
     ...     def __init__(self, user):
     ...         self.user = user
-    >>> from authomatic.core import User
     >>> result = Result(User('github',
     ...                      user_id='123456',
     ...                      username='john.doe',
