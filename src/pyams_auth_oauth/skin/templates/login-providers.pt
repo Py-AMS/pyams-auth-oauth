@@ -1,0 +1,13 @@
+<fieldset class="border"
+		  i18n:domain="pyams_auth_oauth">
+	<legend i18n:translate="">External login providers</legend>
+	<div class="d-flex pb-2">
+		<tal:loop repeat="provider view.providers">
+			<a tal:define="configuration provider.get_configuration()"
+			   href="/api/auth/oauth/${provider.provider_name}">
+				<i class="${configuration.icon_class} fa-3x"
+				   data-original-title="${configuration.name}"></i>
+			</a>
+		</tal:loop>
+	</div>
+</fieldset>
