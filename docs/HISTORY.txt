@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.1.2
+-----
+ - updated support for new "find_principals" exact match API
+
 1.1.1
 -----
  - updated package description for Pypi upload...
