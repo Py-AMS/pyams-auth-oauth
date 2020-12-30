@@ -155,7 +155,7 @@ class OAuthUsersFolder(Folder):
             return {principal_id}
         return set()
 
-    def find_principals(self, query):
+    def find_principals(self, query, exact_match=False):
         """Find principals matching given query"""
         if not self.enabled:
             return
@@ -163,11 +163,15 @@ class OAuthUsersFolder(Folder):
             return
         query = query.lower()
         for user in self.values():
-            if (query == user.user_id or
-                    query in (user.name or '').lower() or
-                    query in (user.email or '').lower()):
-                yield PrincipalInfo(id='{0}:{1}'.format(self.prefix, user.user_id),
-                                    title=user.title_with_source)
+            for attr in (user.user_id, user.name, user.first_name,
+                         user.last_name, user.email, user.nickname):
+                if not attr:
+                    continue
+                if (exact_match and query == attr.lower()) or \
+                        (not exact_match and query in attr.lower()):
+                    yield PrincipalInfo(id='{0}:{1}'.format(self.prefix, user.user_id),
+                                        title=user.title_with_source)
+                    break
 
     def get_search_results(self, data):
         """Find principals matching given search query"""
