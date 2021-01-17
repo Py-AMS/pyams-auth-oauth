@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.1.3
+-----
+ - updated JSON response in provider add form renderer
+
 1.1.2
 -----
  - updated support for new "find_principals" exact match API
