@@ -233,12 +233,12 @@ class OAuthProviderAddFormRenderer(ContextRequestViewAdapter):
 
     def render(self, changes):
         """JSON form renderer"""
-        if changes:
-            return {
-                'status': 'reload',
-                'location': self.view.next_url()
-            }
-        return None
+        if not changes:
+            return None
+        return {
+            'status': 'reload',
+            'location': self.view.next_url()
+        }
 
 
 @ajax_form_config(name='properties.html',
