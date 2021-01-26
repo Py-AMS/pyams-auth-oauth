@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.1.4
+-----
+ - removed Travis-CI configuration
+
 1.1.3
 -----
  - updated JSON response in provider add form renderer
