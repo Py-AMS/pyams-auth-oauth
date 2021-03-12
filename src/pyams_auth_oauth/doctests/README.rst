@@ -7,7 +7,7 @@ Introduction
 ============
 
 This package is an extension to PyAMS_security, which provides features to authenticate
-principals using external OAuth or OpenID providers (like Facebbok, Google, Twitter and many
+principals using external OAuth or OpenID providers (like Facebook, Google, Twitter and many
 others).
 
 The package relies on Python "Authomatic" package.
@@ -22,6 +22,8 @@ The package relies on Python "Authomatic" package.
 
     >>> from pyramid_zodbconn import includeme as include_zodbconn
     >>> include_zodbconn(config)
+    >>> from cornice import includeme as include_cornice
+    >>> include_cornice(config)
     >>> from pyams_utils import includeme as include_utils
     >>> include_utils(config)
     >>> from pyams_site import includeme as include_site
