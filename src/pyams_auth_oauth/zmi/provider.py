@@ -175,8 +175,8 @@ class OAuthProviderPermissionChecker(ContextAdapter):
 #
 
 @viewlet_config(name='add-oauth-provider.menu',
-                context=ISiteRoot, layer=IAdminLayer,
-                view=OAuthProvidersView, manager=IToolbarViewletManager, weight=10,
+                context=ISiteRoot, layer=IAdminLayer, view=OAuthProvidersTable,
+                manager=IToolbarViewletManager, weight=10,
                 permission=MANAGE_SECURITY_PERMISSION)
 class OAuthProviderAddAction(ContextAction):
     """OAuth provider add action"""
