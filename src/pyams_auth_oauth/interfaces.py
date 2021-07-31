@@ -150,6 +150,9 @@ class IOAuthLoginProviderConnection(Interface):
 # OAuth users interfaces
 #
 
+OAUTH_USERS_FOLDER_LABEL = _("OAuth users folder plug-in")
+
+
 class IOAuthUsersFolderPlugin(IDirectorySearchPlugin):
     """OAuth users folder interface"""
 

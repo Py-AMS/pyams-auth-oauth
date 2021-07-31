@@ -18,7 +18,8 @@ This module holds views used to manage OAuth users folders.
 from pyramid.view import view_config
 from zope.interface import Interface
 
-from pyams_auth_oauth.interfaces import IOAuthUser, IOAuthUsersFolderPlugin
+from pyams_auth_oauth.interfaces import IOAuthUser, IOAuthUsersFolderPlugin, \
+    OAUTH_USERS_FOLDER_LABEL
 from pyams_auth_oauth.plugin import get_provider_info
 from pyams_form.ajax import ajax_form_config
 from pyams_form.field import Fields
@@ -27,8 +28,8 @@ from pyams_pagelet.pagelet import pagelet_config
 from pyams_security.interfaces import ISecurityManager, IViewContextPermissionChecker
 from pyams_security.interfaces.base import MANAGE_SECURITY_PERMISSION
 from pyams_security_views.zmi import SecurityPluginsTable
-from pyams_security_views.zmi.plugin import SecurityPluginAddForm, SecurityPluginAddMenu, \
-    SecurityPluginPropertiesEditForm
+from pyams_security_views.zmi.plugin import InnerSecurityPluginFormMixin, SecurityPluginAddForm, \
+    SecurityPluginAddMenu, SecurityPluginPropertiesEditForm
 from pyams_site.interfaces import ISiteRoot
 from pyams_table.column import GetAttrColumn
 from pyams_table.interfaces import IColumn, IValues
@@ -68,8 +69,8 @@ class OAuthFolderPluginAddMenu(SecurityPluginAddMenu):
 class OAuthFolderPluginAddForm(SecurityPluginAddForm):
     """OAuth folder plug-in add form"""
 
-    legend = _("Add OAuth users folder plug-in")
     content_factory = IOAuthUsersFolderPlugin
+    content_label = OAUTH_USERS_FOLDER_LABEL
 
 
 @ajax_form_config(name='properties.html',
@@ -77,7 +78,6 @@ class OAuthFolderPluginAddForm(SecurityPluginAddForm):
 class OAuthFolderPropertiesEditForm(SecurityPluginPropertiesEditForm):
     """OAuth folder plug-in properties edit form"""
 
-    title = _("OAuth users folder plug-in")
     plugin_interface = IOAuthUsersFolderPlugin
 
 
@@ -220,15 +220,18 @@ def delete_local_user(request):
 # OAuth users views
 #
 
-@ajax_form_config(name='properties.html', context=IOAuthUser, layer=IPyAMSLayer)
-class OAuthUserEditForm(AdminModalDisplayForm):
+@ajax_form_config(name='properties.html',
+                  context=IOAuthUser, layer=IPyAMSLayer)
+class OAuthUserEditForm(InnerSecurityPluginFormMixin, AdminModalDisplayForm):
     """OAuth user display form"""
 
     @property
     def title(self):
         """Form title"""
-        return self.context.name or '{} {}'.format(self.context.first_name,
-                                                   self.context.last_name)
+        translate = self.request.localizer.translate
+        return '{}<br /><small>{}</small>'.format(
+            super().title,
+            translate(_("User: {}")).format(self.context.title))
 
     legend = _("User properties")
 

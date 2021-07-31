@@ -49,6 +49,7 @@ from pyams_zmi.interfaces.table import ITableElementEditor
 from pyams_zmi.interfaces.viewlet import IToolbarViewletManager
 from pyams_zmi.table import I18nColumnMixin, Table, TableAdminView, TableElementEditor, \
     TrashColumn
+from pyams_zmi.utils import get_object_label
 from pyams_zmi.zmi.viewlet.menu import NavigationMenuItem
 
 
@@ -200,7 +201,15 @@ class OAuthProviderAddAction(ContextAction):
 class OAuthProviderAddForm(AdminModalAddForm):
     """OAuth provider add form"""
 
-    title = _("Security manager")
+    @property
+    def title(self):
+        """Form title getter"""
+        translate = self.request.localizer.translate
+        manager = get_utility(ISecurityManager)
+        return '<small>{}</small><br />{}'.format(
+            get_object_label(manager, self.request, self),
+            translate(_("Plug-in: OAuth authentication")))
+
     legend = _("Add OAuth provider")
 
     fields = Fields(IOAuthLoginProviderConnection).omit('__parent__', '__name__')
@@ -247,8 +256,14 @@ class OAuthProviderEditForm(AdminModalEditForm):
     """OAuth provider edit form"""
 
     @property
-    def title(self):  # pylint: disable=missing-function-docstring
-        return self.context.provider_name
+    def title(self):
+        """Form title getter"""
+        translate = self.request.localizer.translate
+        manager = get_utility(ISecurityManager)
+        return '<small>{}</small><br />{}<br /><small>{}</small>'.format(
+            get_object_label(manager, self.request, self),
+            translate(_("Plug-in: OAuth authentication")),
+            translate(_("Provider: {}")).format(self.context.provider_name))
 
     legend = _("OAuth provider properties")
 
