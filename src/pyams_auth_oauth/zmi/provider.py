@@ -31,7 +31,6 @@ from pyams_layer.interfaces import IPyAMSLayer
 from pyams_pagelet.pagelet import pagelet_config
 from pyams_security.interfaces import ISecurityManager, IViewContextPermissionChecker
 from pyams_security.interfaces.base import MANAGE_SECURITY_PERMISSION
-from pyams_site.interfaces import ISiteRoot
 from pyams_skin.interfaces.viewlet import IHelpViewletManager
 from pyams_skin.viewlet.actions import ContextAction
 from pyams_skin.viewlet.help import AlertMessage
@@ -59,7 +58,7 @@ from pyams_auth_oauth import _  # pylint: disable=ungrouped-imports
 
 
 @viewlet_config(name='oauth-providers.menu',
-                context=ISiteRoot, layer=IAdminLayer,
+                context=ISecurityManager, layer=IAdminLayer,
                 manager=IOauthConfigurationMenu, weight=10,
                 permission=MANAGE_SECURITY_PERMISSION)
 class OAuthProvidersMenu(NavigationMenuItem):
@@ -75,15 +74,14 @@ class OAuthProvidersTable(Table):
     @property
     def data_attributes(self):
         attributes = super(OAuthProvidersTable, self).data_attributes
-        sm = get_utility(ISecurityManager)  # pylint: disable=invalid-name
-        configuration = IOAuthLoginConfiguration(sm)
+        configuration = IOAuthLoginConfiguration(self.context)
         attributes['table'].update({
             'data-ams-location': absolute_url(configuration, self.request)
         })
         return attributes
 
 
-@adapter_config(required=(ISiteRoot, IAdminLayer, OAuthProvidersTable),
+@adapter_config(required=(ISecurityManager, IAdminLayer, OAuthProvidersTable),
                 provides=IValues)
 class OAuthProvidersTableValues(ContextRequestViewAdapter):
     """OAuth providers table values adapter"""
@@ -91,12 +89,11 @@ class OAuthProvidersTableValues(ContextRequestViewAdapter):
     @property
     def values(self):
         """Table values"""
-        sm = get_utility(ISecurityManager)  # pylint: disable=invalid-name
-        yield from IOAuthLoginConfiguration(sm).values()
+        yield from IOAuthLoginConfiguration(self.context).values()
 
 
 @adapter_config(name='id',
-                required=(ISiteRoot, IAdminLayer, OAuthProvidersTable),
+                required=(ISecurityManager, IAdminLayer, OAuthProvidersTable),
                 provides=IColumn)
 class OAuthProvidersIdColumn(I18nColumnMixin, GetAttrColumn):
     """OAuth providers ID column"""
@@ -108,7 +105,7 @@ class OAuthProvidersIdColumn(I18nColumnMixin, GetAttrColumn):
 
 
 @adapter_config(name='provider',
-                required=(ISiteRoot, IAdminLayer, OAuthProvidersTable),
+                required=(ISecurityManager, IAdminLayer, OAuthProvidersTable),
                 provides=IColumn)
 class OAuthProvidersProviderColumn(I18nColumnMixin, GetAttrColumn):
     """OAuth providers provider column"""
@@ -120,14 +117,14 @@ class OAuthProvidersProviderColumn(I18nColumnMixin, GetAttrColumn):
 
 
 @adapter_config(name='trash',
-                required=(ISiteRoot, IAdminLayer, OAuthProvidersTable),
+                required=(ISecurityManager, IAdminLayer, OAuthProvidersTable),
                 provides=IColumn)
 class OAuthProvidersTrashColumn(TrashColumn):
     """OAuth providers trash column"""
 
 
 @pagelet_config(name='oauth-providers.html',
-                context=ISiteRoot, layer=IPyAMSLayer,
+                context=ISecurityManager, layer=IPyAMSLayer,
                 permission=MANAGE_SECURITY_PERMISSION, xhr=True)
 class OAuthProvidersView(TableAdminView):
     """OAuth providers view"""
@@ -137,7 +134,7 @@ class OAuthProvidersView(TableAdminView):
 
 
 @viewlet_config(name='oauth-providers.help',
-                context=ISiteRoot, layer=IAdminLayer, view=OAuthProvidersView,
+                context=ISecurityManager, layer=IAdminLayer, view=OAuthProvidersView,
                 manager=IHelpViewletManager, weight=10)
 class OAuthProvidersHelp(AlertMessage):
     """OAuth providers view help"""
@@ -176,7 +173,7 @@ class OAuthProviderPermissionChecker(ContextAdapter):
 #
 
 @viewlet_config(name='add-oauth-provider.menu',
-                context=ISiteRoot, layer=IAdminLayer, view=OAuthProvidersTable,
+                context=ISecurityManager, layer=IAdminLayer, view=OAuthProvidersTable,
                 manager=IToolbarViewletManager, weight=10,
                 permission=MANAGE_SECURITY_PERMISSION)
 class OAuthProviderAddAction(ContextAction):
@@ -190,8 +187,7 @@ class OAuthProviderAddAction(ContextAction):
     modal_target = True
 
     def get_href(self):
-        sm = get_utility(ISecurityManager)  # pylint: disable=invalid-name
-        configuration = IOAuthLoginConfiguration(sm)
+        configuration = IOAuthLoginConfiguration(self.context)
         return absolute_url(configuration, self.request, self.href)
 
 

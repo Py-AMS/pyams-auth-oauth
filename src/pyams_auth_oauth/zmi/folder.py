@@ -30,11 +30,11 @@ from pyams_security.interfaces.base import MANAGE_SECURITY_PERMISSION
 from pyams_security_views.zmi import SecurityPluginsTable
 from pyams_security_views.zmi.plugin import InnerSecurityPluginFormMixin, SecurityPluginAddForm, \
     SecurityPluginAddMenu, SecurityPluginPropertiesEditForm
-from pyams_site.interfaces import ISiteRoot
 from pyams_table.column import GetAttrColumn
 from pyams_table.interfaces import IColumn, IValues
 from pyams_utils.adapter import ContextAdapter, ContextRequestViewAdapter, adapter_config
 from pyams_utils.date import EXT_DATETIME_FORMAT
+from pyams_utils.registry import get_utility
 from pyams_utils.url import absolute_url
 from pyams_viewlet.viewlet import viewlet_config
 from pyams_zmi.form import AdminModalDisplayForm
@@ -53,8 +53,8 @@ from pyams_auth_oauth import _  # pylint: disable=ungrouped-imports
 
 
 @viewlet_config(name='add-oauth-folder-plugin.menu',
-                context=ISiteRoot, layer=IAdminLayer, view=SecurityPluginsTable,
-                manager=IContextAddingsViewletManager, weight=50,
+                context=ISecurityManager, layer=IAdminLayer, view=SecurityPluginsTable,
+                manager=IContextAddingsViewletManager, weight=60,
                 permission=MANAGE_SECURITY_PERMISSION)
 class OAuthFolderPluginAddMenu(SecurityPluginAddMenu):
     """OAuth folder plug-in add menu"""
@@ -93,7 +93,8 @@ class OAuthUsersSearchForm(SearchForm):  # pylint: disable=abstract-method
     @property
     def back_url(self):
         """URL to previous page"""
-        return absolute_url(self.request.root, self.request, 'security-plugins.html')
+        manager = get_utility(ISecurityManager)
+        return absolute_url(manager, self.request, 'security-plugins.html')
 
 
 @pagelet_config(name='search.html',

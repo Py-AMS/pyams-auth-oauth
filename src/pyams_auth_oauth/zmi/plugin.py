@@ -19,8 +19,9 @@ __docformat__ = 'restructuredtext'
 
 from zope.interface import Interface
 
-from pyams_auth_oauth.zmi.interfaces import IOauthConfigurationMenu
+from pyams_auth_oauth import _  # pylint: disable=ungrouped-imports
 from pyams_auth_oauth.interfaces import IOAuthSecurityConfiguration
+from pyams_auth_oauth.zmi.interfaces import IOauthConfigurationMenu
 from pyams_form.ajax import ajax_form_config
 from pyams_form.browser.checkbox import SingleCheckBoxFieldWidget
 from pyams_form.field import Fields
@@ -29,22 +30,18 @@ from pyams_layer.interfaces import IPyAMSLayer
 from pyams_security.interfaces import ISecurityManager
 from pyams_security.interfaces.base import MANAGE_SECURITY_PERMISSION
 from pyams_security_views.zmi import ISecurityMenu
-from pyams_site.interfaces import ISiteRoot
 from pyams_skin.interfaces.viewlet import IHeaderViewletManager
 from pyams_skin.viewlet.help import AlertMessage
 from pyams_utils.adapter import adapter_config
-from pyams_utils.registry import get_utility
 from pyams_viewlet.manager import viewletmanager_config
 from pyams_viewlet.viewlet import viewlet_config
 from pyams_zmi.form import AdminEditForm, FormGroupChecker
 from pyams_zmi.interfaces import IAdminLayer
 from pyams_zmi.zmi.viewlet.menu import NavigationMenuItem
 
-from pyams_auth_oauth import _  # pylint: disable=ungrouped-imports
-
 
 @viewletmanager_config(name='oauth-security-configuration.menu',
-                       context=ISiteRoot, layer=IAdminLayer,
+                       context=ISecurityManager, layer=IAdminLayer,
                        manager=ISecurityMenu, weight=60,
                        provides=IOauthConfigurationMenu,
                        permission=MANAGE_SECURITY_PERMISSION)
@@ -56,7 +53,7 @@ class OAuthSecurityConfiguration(NavigationMenuItem):
 
 
 @ajax_form_config(name='oauth-security-configuration.html',
-                  context=ISiteRoot, layer=IPyAMSLayer,
+                  context=ISecurityManager, layer=IPyAMSLayer,
                   permission=MANAGE_SECURITY_PERMISSION)
 class OAuthSecurityConfigurationEditForm(AdminEditForm):
     """OAUth security configuration edit form"""
@@ -68,7 +65,7 @@ class OAuthSecurityConfigurationEditForm(AdminEditForm):
 
 
 @adapter_config(name='oauth-configuration',
-                required=(ISiteRoot, IAdminLayer, OAuthSecurityConfigurationEditForm),
+                required=(ISecurityManager, IAdminLayer, OAuthSecurityConfigurationEditForm),
                 provides=IGroup)
 class OAuthConfigurationGroup(FormGroupChecker):
     """OAuth configuration edit group"""
@@ -77,12 +74,11 @@ class OAuthConfigurationGroup(FormGroupChecker):
     fields['use_login_popup'].widget_factory = SingleCheckBoxFieldWidget
 
     def get_content(self):
-        sm = get_utility(ISecurityManager)  # pylint: disable=invalid-name
-        return IOAuthSecurityConfiguration(sm)
+        return IOAuthSecurityConfiguration(self.context)
 
 
 @viewlet_config(name='oauth-configuration.header',
-                context=ISiteRoot, layer=IAdminLayer, view=OAuthConfigurationGroup,
+                context=ISecurityManager, layer=IAdminLayer, view=OAuthConfigurationGroup,
                 manager=IHeaderViewletManager, weight=1)
 class OauthConfigurationHeader(AlertMessage):
     """Oauth configuration header"""
