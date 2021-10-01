@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.2.3
+-----
+ - updated ZMI menus context
+
 1.2.2
 -----
  - updated add and edit forms title
