@@ -33,7 +33,8 @@ from pyams_auth_oauth.interfaces import IOAuthLoginConfiguration, IOAuthLoginPro
     IOAuthLoginProviderInfo, IOAuthSecurityConfiguration, \
     IOAuthUser, IOAuthUsersFolderPlugin, OAUTH_CONFIGURATION_KEY, OAUTH_LOGIN_CONFIGURATION_KEY, \
     OAUTH_PROVIDERS_VOCABULARY_NAME, OAUTH_USERS_FOLDERS_VOCABULARY_NAME
-from pyams_security.interfaces import IAuthenticatedPrincipalEvent, ISecurityManager
+from pyams_security.interfaces import IAuthenticatedPrincipalEvent, ISecurityManager, \
+    PRINCIPAL_ID_FORMATTER
 from pyams_security.interfaces.base import IPrincipalInfo
 from pyams_security.principal import PrincipalInfo
 from pyams_utils.adapter import ContextAdapter, adapter_config, get_annotation_adapter
@@ -141,8 +142,8 @@ class OAuthUsersFolder(Folder):
         user = self.get(login)
         if user is not None:
             if info:
-                return PrincipalInfo(id='{prefix}:{user_id}'.format(prefix=self.prefix,
-                                                                    user_id=user.user_id),
+                return PrincipalInfo(id=PRINCIPAL_ID_FORMATTER.format(prefix=self.prefix,
+                                                                      login=user.user_id),
                                      title=user.title)
             return user
         return None

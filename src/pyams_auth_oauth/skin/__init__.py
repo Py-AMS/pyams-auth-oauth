@@ -33,7 +33,7 @@ from pyams_form.interfaces.form import IInnerSubForm
 from pyams_form.subform import InnerAddForm
 from pyams_layer.interfaces import IPyAMSLayer
 from pyams_security.interfaces import AuthenticatedPrincipalEvent, ISecurityManager, \
-    LOGIN_REFERER_KEY
+    LOGIN_REFERER_KEY, PRINCIPAL_ID_FORMATTER
 from pyams_security_views.interfaces.login import ILoginView
 from pyams_template.template import template_config
 from pyams_utils.adapter import adapter_config
@@ -111,8 +111,8 @@ def login(request):
                                                                 principal_id=user_id,
                                                                 provider_name=provider_name,
                                                                 user=result.user))
-            principal_id = '{prefix}:{user_id}'.format(prefix=oauth_folder.prefix,
-                                                       user_id=user_id)
+            principal_id = PRINCIPAL_ID_FORMATTER.format(prefix=oauth_folder.prefix,
+                                                         login=user_id)
             headers = remember(request, principal_id)
             response.headerlist.extend(headers)
         if configuration.use_login_popup:
