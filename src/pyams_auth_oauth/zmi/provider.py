@@ -32,7 +32,7 @@ from pyams_pagelet.pagelet import pagelet_config
 from pyams_security.interfaces import ISecurityManager, IViewContextPermissionChecker
 from pyams_security.interfaces.base import MANAGE_SECURITY_PERMISSION
 from pyams_skin.interfaces.viewlet import IHelpViewletManager
-from pyams_skin.viewlet.actions import ContextAction
+from pyams_skin.viewlet.actions import ContextAddAction
 from pyams_skin.viewlet.help import AlertMessage
 from pyams_table.column import GetAttrColumn
 from pyams_table.interfaces import IColumn, IValues
@@ -176,15 +176,11 @@ class OAuthProviderPermissionChecker(ContextAdapter):
                 context=ISecurityManager, layer=IAdminLayer, view=OAuthProvidersTable,
                 manager=IToolbarViewletManager, weight=10,
                 permission=MANAGE_SECURITY_PERMISSION)
-class OAuthProviderAddAction(ContextAction):
+class OAuthProviderAddAction(ContextAddAction):
     """OAuth provider add action"""
 
     label = _("Add provider")
-    status = 'success'
-    icon_class = 'fas fa-plus'
-
     href = 'add-oauth-provider.html'
-    modal_target = True
 
     def get_href(self):
         configuration = IOAuthLoginConfiguration(self.context)
