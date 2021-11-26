@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.2.5
+-----
+ - use new context base add action
+
 1.2.4
 -----
  - use constant for principal ID formatter
