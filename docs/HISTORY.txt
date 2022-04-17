@@ -1,6 +1,11 @@
 Changelog
 =========
 
+1.2.6
+-----
+ - PyAMS_security interfaces refactoring
+ - added support for Python 3.10
+
 1.2.5
 -----
  - use new context base add action
