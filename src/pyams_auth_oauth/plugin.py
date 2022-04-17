@@ -30,11 +30,12 @@ from zope.schema.vocabulary import SimpleTerm, SimpleVocabulary
 from zope.traversing.interfaces import ITraversable
 
 from pyams_auth_oauth.interfaces import IOAuthLoginConfiguration, IOAuthLoginProviderConnection, \
-    IOAuthLoginProviderInfo, IOAuthSecurityConfiguration, \
-    IOAuthUser, IOAuthUsersFolderPlugin, OAUTH_CONFIGURATION_KEY, OAUTH_LOGIN_CONFIGURATION_KEY, \
-    OAUTH_PROVIDERS_VOCABULARY_NAME, OAUTH_USERS_FOLDERS_VOCABULARY_NAME
-from pyams_security.interfaces import IAuthenticatedPrincipalEvent, ISecurityManager, \
-    PRINCIPAL_ID_FORMATTER
+    IOAuthLoginProviderInfo, IOAuthSecurityConfiguration, IOAuthUser, IOAuthUsersFolderPlugin, \
+    OAUTH_CONFIGURATION_KEY, OAUTH_LOGIN_CONFIGURATION_KEY, OAUTH_PROVIDERS_VOCABULARY_NAME, \
+    OAUTH_USERS_FOLDERS_VOCABULARY_NAME
+from pyams_security.interfaces import ISecurityManager
+from pyams_security.interfaces.names import PRINCIPAL_ID_FORMATTER
+from pyams_security.interfaces.plugin import IAuthenticatedPrincipalEvent
 from pyams_security.interfaces.base import IPrincipalInfo
 from pyams_security.principal import PrincipalInfo
 from pyams_utils.adapter import ContextAdapter, adapter_config, get_annotation_adapter

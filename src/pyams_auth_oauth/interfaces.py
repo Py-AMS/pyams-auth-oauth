@@ -19,7 +19,7 @@ from zope.container.constraints import containers, contains
 from zope.interface import Attribute, Interface, Invalid, invariant
 from zope.schema import Bool, Choice, Datetime, Int, List, Text, TextLine
 
-from pyams_security.interfaces import IDirectorySearchPlugin
+from pyams_security.interfaces.plugin import IDirectorySearchPlugin
 
 
 __docformat__ = 'restructuredtext'

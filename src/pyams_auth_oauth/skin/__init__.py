@@ -32,8 +32,9 @@ from pyams_form.field import Fields
 from pyams_form.interfaces.form import IInnerSubForm
 from pyams_form.subform import InnerAddForm
 from pyams_layer.interfaces import IPyAMSLayer
-from pyams_security.interfaces import AuthenticatedPrincipalEvent, ISecurityManager, \
-    LOGIN_REFERER_KEY, PRINCIPAL_ID_FORMATTER
+from pyams_security.interfaces import ISecurityManager, LOGIN_REFERER_KEY
+from pyams_security.interfaces.names import PRINCIPAL_ID_FORMATTER
+from pyams_security.interfaces.plugin import AuthenticatedPrincipalEvent
 from pyams_security_views.interfaces.login import ILoginView
 from pyams_template.template import template_config
 from pyams_utils.adapter import adapter_config

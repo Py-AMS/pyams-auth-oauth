@@ -184,7 +184,7 @@ As we can't rely on this provider, we will "simulate" a correct login:
     ...                      username='john.doe',
     ...                      name='John Doe'))
 
-    >>> from pyams_security.interfaces import AuthenticatedPrincipalEvent
+    >>> from pyams_security.interfaces.plugin import AuthenticatedPrincipalEvent
     >>> event = AuthenticatedPrincipalEvent('oauth',
     ...                                     principal_id='github_user_id',
     ...                                     provider_name='github',
