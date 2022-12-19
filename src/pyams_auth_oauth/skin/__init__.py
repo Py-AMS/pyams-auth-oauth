@@ -28,31 +28,28 @@ from pyramid.view import view_config
 from zope.interface import Interface
 
 from pyams_auth_oauth.interfaces import IOAuthLoginConfiguration, IOAuthSecurityConfiguration
-from pyams_form.field import Fields
-from pyams_form.interfaces.form import IInnerSubForm
-from pyams_form.subform import InnerAddForm
 from pyams_layer.interfaces import IPyAMSLayer
 from pyams_security.interfaces import ISecurityManager, LOGIN_REFERER_KEY
 from pyams_security.interfaces.names import PRINCIPAL_ID_FORMATTER
 from pyams_security.interfaces.plugin import AuthenticatedPrincipalEvent
 from pyams_security_views.interfaces.login import ILoginView
+from pyams_skin.interfaces.viewlet import IFormFooterViewletManager
 from pyams_template.template import template_config
-from pyams_utils.adapter import adapter_config
 from pyams_utils.registry import get_utility, query_utility
-from pyams_viewlet.viewlet import Viewlet
+from pyams_viewlet.viewlet import Viewlet, viewlet_config
 
 
 __docformat__ = 'restructuredtext'
 
 
-@adapter_config(name='oauth-providers.group',
-                required=(Interface, IPyAMSLayer, ILoginView),
-                provides=IInnerSubForm)
+@viewlet_config(name='oauth-providers.group',
+                context=Interface, layer=IPyAMSLayer, view=ILoginView,
+                manager=IFormFooterViewletManager, weight=10)
 @template_config(template='templates/login-providers.pt', layer=IPyAMSLayer)
-class OAuthProvidersGroup(InnerAddForm):
+class OAuthProvidersGroup(Viewlet):
     """OAuth providers viewlet"""
 
-    def __new__(cls, context, request, parent_form):  # pylint: disable=unused-argument
+    def __new__(cls, context, request, view, manager):  # pylint: disable=unused-argument
         sm = query_utility(ISecurityManager)  # pylint: disable=invalid-name
         if sm is None:
             return None
@@ -60,9 +57,6 @@ class OAuthProvidersGroup(InnerAddForm):
         if not configuration.enabled:
             return None
         return Viewlet.__new__(cls)
-
-    fields = Fields(Interface)
-    weight = 10
 
     @property
     def providers(self):
