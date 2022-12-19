@@ -73,7 +73,7 @@ class OAuthProvidersTable(Table):
 
     @property
     def data_attributes(self):
-        attributes = super(OAuthProvidersTable, self).data_attributes
+        attributes = super().data_attributes
         configuration = IOAuthLoginConfiguration(self.context)
         attributes['table'].update({
             'data-ams-location': absolute_url(configuration, self.request)

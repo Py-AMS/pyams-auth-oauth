@@ -112,7 +112,7 @@ class OAuthUsersSearchResultsTable(Table):
 
     @property
     def data_attributes(self):
-        attributes = super(OAuthUsersSearchResultsTable, self).data_attributes
+        attributes = super().data_attributes
         attributes['table'].update({
             'data-ams-order': '1,asc'
         })
