@@ -42,7 +42,8 @@ from pyams_utils.url import absolute_url
 from pyams_viewlet.viewlet import viewlet_config
 from pyams_zmi.form import AdminModalAddForm, AdminModalEditForm
 from pyams_zmi.helper.container import delete_container_element
-from pyams_zmi.helper.event import get_json_table_row_refresh_callback
+from pyams_zmi.helper.event import get_json_table_row_add_callback, \
+    get_json_table_row_refresh_callback
 from pyams_zmi.interfaces import IAdminLayer
 from pyams_zmi.interfaces.table import ITableElementEditor
 from pyams_zmi.interfaces.viewlet import IToolbarViewletManager
@@ -209,13 +210,10 @@ class OAuthProviderAddForm(AdminModalAddForm):
 
     def update_content(self, obj, data):
         obj.provider_id = data.get(self, {}).get('provider_id')
-        return super(OAuthProviderAddForm, self).update_content(obj, data)
+        return super().update_content(obj, data)
 
     def add(self, obj):
         self.context[str(obj.provider_id)] = obj
-
-    def next_url(self):
-        return absolute_url(self.request.root, self.request, 'oauth-providers.html')
 
 
 @subscriber(IDataExtractedEvent, form_selector=OAuthProviderAddForm)
@@ -236,9 +234,12 @@ class OAuthProviderAddFormRenderer(ContextRequestViewAdapter):
         """JSON form renderer"""
         if not changes:
             return None
+        sm = get_utility(ISecurityManager)
         return {
-            'status': 'reload',
-            'location': self.view.next_url()
+            'callbacks': [
+                get_json_table_row_add_callback(sm, self.request,
+                                                OAuthProvidersTable, changes)
+            ]
         }
 
 
@@ -283,10 +284,11 @@ class OAuthProviderEditFormRenderer(ContextRequestViewAdapter):
     def render(self, changes):  # pylint: disable=missing-function-docstring
         if not changes:
             return None
+        sm = get_utility(ISecurityManager)
         provider = self.view.context
         return {
             'callbacks': [
-                get_json_table_row_refresh_callback(self.request.root, self.request,
+                get_json_table_row_refresh_callback(sm, self.request,
                                                     OAuthProvidersTable, provider)
             ]
         }
