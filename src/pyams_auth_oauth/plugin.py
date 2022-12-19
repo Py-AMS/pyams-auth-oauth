@@ -199,7 +199,7 @@ class OAuthUsersFolderVocabulary(SimpleVocabulary):
             for name, plugin in manager.items():
                 if IOAuthUsersFolderPlugin.providedBy(plugin):
                     terms.append(SimpleTerm(name, title=plugin.title))
-        super(OAuthUsersFolderVocabulary, self).__init__(terms)
+        super().__init__(terms)
 
 
 @subscriber(IAuthenticatedPrincipalEvent, plugin_selector='oauth')
@@ -412,7 +412,7 @@ class OAuthProvidersVocabulary(SimpleVocabulary):
         for key, provider in PROVIDERS_INFO.items():
             terms.append(SimpleTerm(key, title=provider.name))
         terms.sort(key=lambda x: x.title)
-        super(OAuthProvidersVocabulary, self).__init__(terms)
+        super().__init__(terms)
 
 
 @factory_config(IOAuthLoginConfiguration)
@@ -455,7 +455,7 @@ class SecurityManagerOAuthTraverser(ContextAdapter):
 
 
 @factory_config(IOAuthLoginProviderConnection)
-class OAuthLoginProviderConnection(Persistent):
+class OAuthLoginProviderConnection(Persistent, Contained):
     """OAuth login provider connection"""
 
     provider_id = FieldProperty(IOAuthLoginProviderConnection['provider_id'])
