@@ -1,6 +1,14 @@
 Changelog
 =========
 
+1.2.7
+-----
+ - updated management interface
+ - updated providers viewlet
+ - small code refactoring to simplify super() calls
+ - added missing parent class to OAuth provider connection
+ - added support for Python 3.11
+
 1.2.6
 -----
  - PyAMS_security interfaces refactoring
