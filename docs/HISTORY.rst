@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.3.0
+-----
+ - added support for MicrosoftOnline OAuth2 provider
+
 1.2.7
 -----
  - updated management interface

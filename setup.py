@@ -23,13 +23,14 @@ DOCS = os.path.join(os.path.dirname(__file__),
 README = os.path.join(DOCS, 'README.rst')
 HISTORY = os.path.join(DOCS, 'HISTORY.rst')
 
-version = '1.2.7'
+version = '1.3.0'
 long_description = open(README).read() + '\n\n' + open(HISTORY).read()
 
 tests_require = [
     'pyams_site',
     'pyams_skin',
     'pyams_viewlet',
+    'pyams_zmi',
     'pyramid_zcml',
     'zope.exceptions'
 ]
@@ -64,7 +65,7 @@ setup(name='pyams_auth_oauth',
       install_requires=[
           'setuptools',
           # -*- Extra requirements: -*-
-          'authomatic',
+          'authomatic >= 1.2.0',
           'persistent',
           'pyams_form',
           'pyams_layer',
