@@ -28,6 +28,8 @@ The package relies on Python "Authomatic" package.
     >>> include_utils(config)
     >>> from pyams_site import includeme as include_site
     >>> include_site(config)
+    >>> from pyams_form import includeme as include_form
+    >>> include_form(config)
     >>> from pyams_security import includeme as include_security
     >>> include_security(config)
     >>> from pyams_auth_oauth import includeme as include_auth_oauth
