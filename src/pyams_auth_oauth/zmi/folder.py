@@ -15,6 +15,7 @@
 This module holds views used to manage OAuth users folders.
 """
 
+from pyramid.decorator import reify
 from pyramid.view import view_config
 from zope.interface import Interface
 
@@ -110,7 +111,7 @@ class OAuthUsersSearchView(SearchView):
 class OAuthUsersSearchResultsTable(Table):
     """OAuth users search results table"""
 
-    @property
+    @reify
     def data_attributes(self):
         attributes = super().data_attributes
         attributes['table'].update({

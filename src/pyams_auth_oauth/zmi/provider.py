@@ -18,6 +18,7 @@ This module is registering views which are used to manage OAuth providers.
 import json
 from json import JSONDecodeError
 
+from pyramid.decorator import reify
 from pyramid.events import subscriber
 from pyramid.view import view_config
 from zope.interface import Interface, Invalid
@@ -72,7 +73,7 @@ class OAuthProvidersMenu(NavigationMenuItem):
 class OAuthProvidersTable(Table):
     """OAuth providers table"""
 
-    @property
+    @reify
     def data_attributes(self):
         attributes = super().data_attributes
         configuration = IOAuthLoginConfiguration(self.context)
