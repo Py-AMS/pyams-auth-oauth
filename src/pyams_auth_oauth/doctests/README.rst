@@ -53,14 +53,11 @@ Using PyAMS security policy
 
 The plugin should be included correctly into PyAMS security policy:
 
-    >>> from pyramid.authorization import ACLAuthorizationPolicy
-    >>> config.set_authorization_policy(ACLAuthorizationPolicy())
-
-    >>> from pyams_security.policy import PyAMSAuthenticationPolicy
-    >>> policy = PyAMSAuthenticationPolicy(secret='my secret',
-    ...                                    http_only=True,
-    ...                                    secure=False)
-    >>> config.set_authentication_policy(policy)
+    >>> from pyams_security.policy import PyAMSSecurityPolicy
+    >>> policy = PyAMSSecurityPolicy(secret='my secret',
+    ...                              http_only=True,
+    ...                              secure=False)
+    >>> config.set_security_policy(policy)
 
     >>> from pyams_security.interfaces import ISecurityManager
     >>> from pyams_utils.registry import get_utility
