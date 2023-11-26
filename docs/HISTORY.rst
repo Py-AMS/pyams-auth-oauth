@@ -1,6 +1,10 @@
 Changelog
 =========
 
+2.0.0
+-----
+ - migrated to Pyramid 2.0
+
 1.3.0
 -----
  - added support for MicrosoftOnline OAuth2 provider
