@@ -24,20 +24,23 @@ from pyramid.view import view_config
 from zope.interface import Interface, Invalid
 
 from pyams_auth_oauth.interfaces import IOAuthLoginConfiguration, IOAuthLoginProviderConnection
+from pyams_auth_oauth.plugin import PROVIDERS_INFO
 from pyams_auth_oauth.zmi.interfaces import IOauthConfigurationMenu
 from pyams_form.ajax import ajax_form_config
 from pyams_form.field import Fields
-from pyams_form.interfaces.form import IAJAXFormRenderer, IDataExtractedEvent
+from pyams_form.interfaces.form import IAJAXFormRenderer, IAddForm, IDataExtractedEvent
 from pyams_layer.interfaces import IPyAMSLayer
 from pyams_pagelet.pagelet import pagelet_config
 from pyams_security.interfaces import ISecurityManager, IViewContextPermissionChecker
 from pyams_security.interfaces.base import MANAGE_SECURITY_PERMISSION
+from pyams_skin.interfaces.view import IModalPage
 from pyams_skin.interfaces.viewlet import IHelpViewletManager
 from pyams_skin.viewlet.actions import ContextAddAction
 from pyams_skin.viewlet.help import AlertMessage
 from pyams_table.column import GetAttrColumn
 from pyams_table.interfaces import IColumn, IValues
 from pyams_utils.adapter import ContextAdapter, ContextRequestViewAdapter, adapter_config
+from pyams_utils.interfaces import MISSING_INFO
 from pyams_utils.registry import get_utility
 from pyams_utils.url import absolute_url
 from pyams_viewlet.viewlet import viewlet_config
@@ -45,14 +48,14 @@ from pyams_zmi.form import AdminModalAddForm, AdminModalEditForm
 from pyams_zmi.helper.container import delete_container_element
 from pyams_zmi.helper.event import get_json_table_row_add_callback, \
     get_json_table_row_refresh_callback
-from pyams_zmi.interfaces import IAdminLayer
+from pyams_zmi.interfaces import IAdminLayer, TITLE_SPAN_BREAK
+from pyams_zmi.interfaces.form import IFormTitle
 from pyams_zmi.interfaces.table import ITableElementEditor
 from pyams_zmi.interfaces.viewlet import IToolbarViewletManager
 from pyams_zmi.table import I18nColumnMixin, Table, TableAdminView, TableElementEditor, \
     TrashColumn
 from pyams_zmi.utils import get_object_label
 from pyams_zmi.zmi.viewlet.menu import NavigationMenuItem
-
 
 __docformat__ = 'restructuredtext'
 
@@ -116,6 +119,13 @@ class OAuthProvidersProviderColumn(I18nColumnMixin, GetAttrColumn):
     attr_name = 'provider_name'
 
     weight = 20
+
+    def get_value(self, obj):
+        value = super().get_value(obj)
+        try:
+            return PROVIDERS_INFO[value].name
+        except KeyError:
+            return MISSING_INFO
 
 
 @adapter_config(name='trash',
@@ -195,16 +205,8 @@ class OAuthProviderAddAction(ContextAddAction):
 class OAuthProviderAddForm(AdminModalAddForm):
     """OAuth provider add form"""
 
-    @property
-    def title(self):
-        """Form title getter"""
-        translate = self.request.localizer.translate
-        manager = get_utility(ISecurityManager)
-        return '<small>{}</small><br />{}'.format(
-            get_object_label(manager, self.request, self),
-            translate(_("Plug-in: OAuth authentication")))
-
-    legend = _("Add OAuth provider")
+    subtitle = _("New OAuth provider")
+    legend = _("New OAuth provider properties")
 
     fields = Fields(IOAuthLoginProviderConnection).omit('__parent__', '__name__')
     content_factory = IOAuthLoginProviderConnection
@@ -215,6 +217,17 @@ class OAuthProviderAddForm(AdminModalAddForm):
 
     def add(self, obj):
         self.context[str(obj.provider_id)] = obj
+
+
+@adapter_config(required=(IOAuthLoginConfiguration, IAdminLayer, IAddForm),
+                provides=IFormTitle)
+def oauth_provider_add_form_title(context, request, form):
+    """OAuth provider add form title"""
+    translate = request.localizer.translate
+    manager = get_utility(ISecurityManager)
+    return TITLE_SPAN_BREAK.format(
+        get_object_label(manager, request, form),
+        translate(_("Plug-in: OAuth authentication")))
 
 
 @subscriber(IDataExtractedEvent, form_selector=OAuthProviderAddForm)
@@ -250,18 +263,28 @@ class OAuthProviderEditForm(AdminModalEditForm):
     """OAuth provider edit form"""
 
     @property
-    def title(self):
-        """Form title getter"""
+    def subtitle(self):
+        try:
+            provider = PROVIDERS_INFO[self.context.provider_name].name
+        except KeyError:
+            provider = MISSING_INFO
         translate = self.request.localizer.translate
-        manager = get_utility(ISecurityManager)
-        return '<small>{}</small><br />{}<br /><small>{}</small>'.format(
-            get_object_label(manager, self.request, self),
-            translate(_("Plug-in: OAuth authentication")),
-            translate(_("Provider: {}")).format(self.context.provider_name))
+        return translate(_("Provider: {}")).format(provider)
 
     legend = _("OAuth provider properties")
 
     fields = Fields(IOAuthLoginProviderConnection).omit('__parent__', '__name__')
+
+
+@adapter_config(required=(IOAuthLoginProviderConnection, IAdminLayer, IModalPage),
+                provides=IFormTitle)
+def oauth_provider_edit_form_title(context, request, form):
+    """Form title getter"""
+    translate = request.localizer.translate
+    manager = get_utility(ISecurityManager)
+    return TITLE_SPAN_BREAK.format(
+        get_object_label(manager, request, form),
+        translate(_("Plug-in: OAuth authentication")))
 
 
 @subscriber(IDataExtractedEvent, form_selector=OAuthProviderAddForm)

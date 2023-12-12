@@ -15,11 +15,8 @@
 This modules is registering ZMI views which are used to configure OAuth authentication.
 """
 
-__docformat__ = 'restructuredtext'
-
 from zope.interface import Interface
 
-from pyams_auth_oauth import _  # pylint: disable=ungrouped-imports
 from pyams_auth_oauth.interfaces import IOAuthSecurityConfiguration
 from pyams_auth_oauth.zmi.interfaces import IOauthConfigurationMenu
 from pyams_form.ajax import ajax_form_config
@@ -38,6 +35,10 @@ from pyams_viewlet.viewlet import viewlet_config
 from pyams_zmi.form import AdminEditForm, FormGroupChecker
 from pyams_zmi.interfaces import IAdminLayer
 from pyams_zmi.zmi.viewlet.menu import NavigationMenuItem
+
+__docformat__ = 'restructuredtext'
+
+from pyams_auth_oauth import _  # pylint: disable=ungrouped-imports
 
 
 @viewletmanager_config(name='oauth-security-configuration.menu',
@@ -58,8 +59,7 @@ class OAuthSecurityConfiguration(NavigationMenuItem):
 class OAuthSecurityConfigurationEditForm(AdminEditForm):
     """OAUth security configuration edit form"""
 
-    title = _("Security manager")
-    legend = _("OAuth configuration")
+    title = _("OAuth configuration")
 
     fields = Fields(Interface)
 

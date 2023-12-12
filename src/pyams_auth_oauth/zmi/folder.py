@@ -29,8 +29,9 @@ from pyams_pagelet.pagelet import pagelet_config
 from pyams_security.interfaces import ISecurityManager, IViewContextPermissionChecker
 from pyams_security.interfaces.base import MANAGE_SECURITY_PERMISSION
 from pyams_security_views.zmi import SecurityPluginsTable
-from pyams_security_views.zmi.plugin import InnerSecurityPluginFormMixin, SecurityPluginAddForm, \
+from pyams_security_views.zmi.plugin import SecurityPluginAddForm, \
     SecurityPluginAddMenu, SecurityPluginPropertiesEditForm
+from pyams_skin.interfaces.view import IModalPage
 from pyams_table.column import GetAttrColumn
 from pyams_table.interfaces import IColumn, IValues
 from pyams_utils.adapter import ContextAdapter, ContextRequestViewAdapter, adapter_config
@@ -40,13 +41,14 @@ from pyams_utils.url import absolute_url
 from pyams_viewlet.viewlet import viewlet_config
 from pyams_zmi.form import AdminModalDisplayForm
 from pyams_zmi.helper.container import delete_container_element
-from pyams_zmi.interfaces import IAdminLayer
+from pyams_zmi.interfaces import IAdminLayer, TITLE_SPAN_BREAK
+from pyams_zmi.interfaces.form import IFormTitle
 from pyams_zmi.interfaces.table import ITableElementEditor
 from pyams_zmi.interfaces.viewlet import IContextAddingsViewletManager
 from pyams_zmi.search import SearchForm, SearchResultsView, SearchView
 from pyams_zmi.table import DateColumn, I18nColumnMixin, IconColumn, Table, TableElementEditor, \
     TrashColumn
-
+from pyams_zmi.utils import get_object_label
 
 __docformat__ = 'restructuredtext'
 
@@ -224,20 +226,29 @@ def delete_local_user(request):
 
 @ajax_form_config(name='properties.html',
                   context=IOAuthUser, layer=IPyAMSLayer)
-class OAuthUserEditForm(InnerSecurityPluginFormMixin, AdminModalDisplayForm):
+class OAuthUserEditForm(AdminModalDisplayForm):
     """OAuth user display form"""
 
     @property
-    def title(self):
+    def subtitle(self):
         """Form title"""
         translate = self.request.localizer.translate
-        return '{}<br /><small>{}</small>'.format(
-            super().title,
-            translate(_("User: {}")).format(self.context.title))
+        return translate(_("User: {}")).format(self.context.title)
 
     legend = _("User properties")
 
     fields = Fields(IOAuthUser).omit('__parent__', '__name__')
+
+
+@adapter_config(required=(IOAuthUser, IAdminLayer, IModalPage),
+                provides=IFormTitle)
+def oauth_user_form_title(context, request, form):
+    """OAuth user form title"""
+    translate = request.localizer.translate
+    manager = get_utility(ISecurityManager)
+    return TITLE_SPAN_BREAK.format(
+        get_object_label(manager, request, form),
+        translate(_("Plug-in: OAuth users folder")))
 
 
 @adapter_config(required=(IOAuthUser, IAdminLayer, Interface),
