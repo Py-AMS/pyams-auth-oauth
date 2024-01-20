@@ -27,7 +27,7 @@ from pyramid.security import remember
 from pyramid.view import view_config
 from zope.interface import Interface
 
-from pyams_auth_oauth.interfaces import IOAuthLoginConfiguration, IOAuthSecurityConfiguration
+from pyams_auth_oauth.interfaces import IOAuthLoginConfiguration, IOAuthSecurityConfiguration, OAUTH_LOGIN_ROUTE
 from pyams_layer.interfaces import IPyAMSLayer
 from pyams_security.interfaces import ISecurityManager, LOGIN_REFERER_KEY
 from pyams_security.interfaces.names import PRINCIPAL_ID_FORMATTER
@@ -67,7 +67,7 @@ class OAuthProvidersGroup(Viewlet):
                           key=lambda x: x.provider_id)
 
 
-@view_config(route_name='oauth_login')
+@view_config(route_name=OAUTH_LOGIN_ROUTE)
 def login(request):
     """Login view for Authomatic authentication"""
     # check security manager utility

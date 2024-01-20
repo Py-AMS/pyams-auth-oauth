@@ -27,21 +27,27 @@ __docformat__ = 'restructuredtext'
 from pyams_auth_oauth import _
 
 
+OAUTH_LOGIN_ROUTE = 'pyams_oauth.login'
+'''OAuth login route name'''
+
+OAUTH_LOGIN_PATH = '/api/auth/oauth/{provider_name}'
+'''OAuth login default path'''
+
 OAUTH_CONFIGURATION_KEY = 'pyams_auth_oauth.configuration'
-"""Main OAuth configuration key"""
+'''Main OAuth configuration key'''
 
 OAUTH_LOGIN_CONFIGURATION_KEY = 'pyams_auth_oauth.providers'
-"""OAuth providers configuration key"""
+'''OAuth providers configuration key'''
 
 OAUTH_USERS_FOLDERS_VOCABULARY_NAME = 'pyams_auth_oauth.folders'
-"""OAuth users folders vocabulary name"""
+'''OAuth users folders vocabulary name'''
 
 OAUTH_PROVIDERS_VOCABULARY_NAME = 'pyams_auth_oauth.providers'
-"""OAuth providers vocabulary name"""
+'''OAuth providers vocabulary name'''
 
 
 #
-# OAuth authentication utility interface
+# OAuth's authentication utility interface
 #
 
 class IOAuthSecurityConfiguration(Interface):

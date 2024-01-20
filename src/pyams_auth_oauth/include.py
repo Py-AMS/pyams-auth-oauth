@@ -18,6 +18,8 @@ This module is used for Pyramid integration.
 
 __docformat__ = 'restructuredtext'
 
+from pyams_auth_oauth.interfaces import OAUTH_LOGIN_PATH, OAUTH_LOGIN_ROUTE
+
 
 def include_package(config):
     """Pyramid package include"""
@@ -26,7 +28,9 @@ def include_package(config):
     config.add_translation_dirs('pyams_auth_oauth:locales')
 
     # add login route
-    config.add_route('oauth_login', '/api/auth/oauth/{provider_name}')
+    config.add_route(OAUTH_LOGIN_ROUTE,
+                     config.registry.settings.get(f'{OAUTH_LOGIN_ROUTE}_route.path',
+                                                  OAUTH_LOGIN_PATH))
 
     try:
         import pyams_zmi  # pylint: disable=import-outside-toplevel,unused-import
