@@ -202,41 +202,42 @@ class OAuthUsersFolderVocabulary(SimpleVocabulary):
         super().__init__(terms)
 
 
-@subscriber(IAuthenticatedPrincipalEvent, plugin_selector='oauth')
+@subscriber(IAuthenticatedPrincipalEvent, plugin_selector=IOAuthUsersFolderPlugin)
 def handle_authenticated_oauth_principal(event):  # pylint: disable=invalid-name
     """Handle authenticated OAuth principal"""
-    manager = get_utility(ISecurityManager)
-    configuration = IOAuthSecurityConfiguration(manager)
-    oauth_folder = manager.get(configuration.users_folder)
-    if oauth_folder is not None:
-        infos = event.infos
-        if not (infos and
-                'provider_name' in infos and
-                'user' in infos):
-            return
-        user = infos['user']
-        principal_id = event.principal_id
-        if principal_id not in oauth_folder:
-            oauth_user = OAuthUser()
-            check_request().registry.notify(ObjectCreatedEvent(oauth_user))
-            oauth_user.user_id = principal_id
-            oauth_user.provider_name = infos['provider_name']
-            oauth_user.username = user.username
-            oauth_user.name = user.name
-            oauth_user.first_name = user.first_name
-            oauth_user.last_name = user.last_name
-            oauth_user.nickname = user.nickname
-            oauth_user.email = user.email
-            oauth_user.timezone = str(user.timezone)
-            oauth_user.country = user.country
-            oauth_user.city = user.city
-            oauth_user.postal_code = user.postal_code
-            oauth_user.locale = user.locale
-            oauth_user.picture = user.picture
-            if isinstance(user.birth_date, datetime):
-                oauth_user.birth_date = user.birth_date
-            oauth_user.registration_date = datetime.utcnow()
-            oauth_folder[principal_id] = oauth_user
+    oauth_folder = event.plugin
+    if (oauth_folder is None) or not oauth_folder.enabled:
+        return
+    infos = event.infos
+    if not (infos and
+            'provider_name' in infos and
+            'user' in infos):
+        return
+    user = infos['user']
+    principal_id = event.principal_id
+    if ':' in principal_id:
+        prefix, principal_id = principal_id.split(':', 1)
+    if principal_id not in oauth_folder:
+        oauth_user = OAuthUser()
+        check_request().registry.notify(ObjectCreatedEvent(oauth_user))
+        oauth_user.user_id = principal_id
+        oauth_user.provider_name = infos['provider_name']
+        oauth_user.username = user.username
+        oauth_user.name = user.name
+        oauth_user.first_name = user.first_name
+        oauth_user.last_name = user.last_name
+        oauth_user.nickname = user.nickname
+        oauth_user.email = user.email
+        oauth_user.timezone = str(user.timezone)
+        oauth_user.country = user.country
+        oauth_user.city = user.city
+        oauth_user.postal_code = user.postal_code
+        oauth_user.locale = user.locale
+        oauth_user.picture = user.picture
+        if isinstance(user.birth_date, datetime):
+            oauth_user.birth_date = user.birth_date
+        oauth_user.registration_date = datetime.utcnow()
+        oauth_folder[principal_id] = oauth_user
 
 
 #

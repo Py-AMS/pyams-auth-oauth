@@ -16,7 +16,7 @@
 
 from zope.annotation import IAttributeAnnotatable
 from zope.container.constraints import containers, contains
-from zope.interface import Attribute, Interface, Invalid, invariant
+from zope.interface import Attribute, Interface, Invalid, implementer, invariant
 from zope.schema import Bool, Choice, Datetime, Int, List, Text, TextLine
 
 from pyams_security.interfaces.plugin import IDirectorySearchPlugin
@@ -214,3 +214,30 @@ class IOAuthUser(IAttributeAnnotatable):
 
     registration_date = Datetime(title=_("Registration date"),
                                  readonly=True)
+
+
+class IOAuthAuthenticationEvent(Interface):
+    """OAuth's authentication event
+
+    This event is notified after standard authentication, and can be used to redirect
+    authenticated user to a registration form or any other location.
+    """
+
+    request = Attribute("Source request")
+
+    plugin = Attribute("Event source plug-in")
+
+    principal_id = Attribute("Authenticated principal ID")
+
+    redirect_location = Attribute("Event redirect location")
+
+
+@implementer(IOAuthAuthenticationEvent)
+class OAuthAuthenticationEvent:
+    """OAuth's authentication event"""
+
+    def __init__(self, request, plugin, principal_id):
+        self.request = request
+        self.plugin = plugin
+        self.principal_id = principal_id
+        self.redirect_location = None

@@ -27,7 +27,8 @@ from pyramid.security import remember
 from pyramid.view import view_config
 from zope.interface import Interface
 
-from pyams_auth_oauth.interfaces import IOAuthLoginConfiguration, IOAuthSecurityConfiguration, OAUTH_LOGIN_ROUTE
+from pyams_auth_oauth.interfaces import IOAuthLoginConfiguration, IOAuthSecurityConfiguration, OAUTH_LOGIN_ROUTE, \
+    OAuthAuthenticationEvent
 from pyams_layer.interfaces import IPyAMSLayer
 from pyams_security.interfaces import ISecurityManager, LOGIN_REFERER_KEY
 from pyams_security.interfaces.names import PRINCIPAL_ID_FORMATTER
@@ -89,6 +90,7 @@ def login(request):
                             secret=configuration.secret,
                             logging_level=WARNING)
     # perform login
+    oauth_event = None
     response = Response()
     result = authomatic.login(WebObAdapter(request, response), provider_name)
     if result:
@@ -100,20 +102,25 @@ def login(request):
                 if not (result.user.id and result.user.name):
                     raise HTTPBadRequest(result.user.content)
             oauth_folder = manager.get(configuration.users_folder)
-            user_id = '{provider_name}.{user_id}'.format(provider_name=provider_name,
-                                                         user_id=result.user.id)
-            request.registry.notify(AuthenticatedPrincipalEvent(plugin='oauth',
-                                                                principal_id=user_id,
-                                                                provider_name=provider_name,
-                                                                user=result.user))
+            user_id = f'{provider_name}.{result.user.id}'
             principal_id = PRINCIPAL_ID_FORMATTER.format(prefix=oauth_folder.prefix,
                                                          login=user_id)
+            request.registry.notify(AuthenticatedPrincipalEvent(plugin=oauth_folder,
+                                                                principal_id=principal_id,
+                                                                provider_name=provider_name,
+                                                                user=result.user))
             headers = remember(request, principal_id)
             response.headerlist.extend(headers)
+            oauth_event = OAuthAuthenticationEvent(request=request,
+                                                   plugin=oauth_folder,
+                                                   principal_id=principal_id)
+            request.registry.notify(oauth_event)
         if configuration.use_login_popup:
             response.text = result.popup_html()
         response.status_code = 302
-        if LOGIN_REFERER_KEY in session:
+        if (oauth_event is not None) and oauth_event.redirect_location:
+            response.location = oauth_event.redirect_location
+        elif LOGIN_REFERER_KEY in session:
             response.location = session[LOGIN_REFERER_KEY]
             del session[LOGIN_REFERER_KEY]
         else:
