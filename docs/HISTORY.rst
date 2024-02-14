@@ -1,6 +1,11 @@
 Changelog
 =========
 
+2.1.0
+-----
+ - added custom OAuth authentication event to be able to handle redirect correctly
+   in any client application
+
 2.0.2
 -----
  - updated REST API route name and path configuraiton setting name
