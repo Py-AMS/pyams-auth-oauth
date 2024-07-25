@@ -1,6 +1,10 @@
 Changelog
 =========
 
+2.1.1
+-----
+ - updated providers view template
+
 2.1.0
 -----
  - added custom OAuth authentication event to be able to handle redirect correctly
