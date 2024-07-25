@@ -1,6 +1,6 @@
 <fieldset tal:define="(has_providers, providers) tales:boolean_iter(view.providers)"
           tal:condition="has_providers"
-          class="border"
+          class="border mb-3"
           i18n:domain="pyams_auth_oauth">
     <legend class="ml-3 px-2 w-auto rounded border"
             i18n:translate="">External login providers</legend>
