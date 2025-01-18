@@ -1,6 +1,10 @@
 Changelog
 =========
 
+2.1.3
+-----
+ - updated Gitlab-CI
+
 2.1.2
 -----
  - updated configuration settings keys
