@@ -27,7 +27,7 @@ __docformat__ = 'restructuredtext'
 from pyams_auth_oauth import _
 
 
-OAUTH_LOGIN_ROUTE = 'pyams_oauth.login'
+OAUTH_LOGIN_ROUTE = 'pyams_auth_oauth.login'
 '''OAuth login route name'''
 
 OAUTH_LOGIN_PATH = '/api/auth/oauth/{provider_name}'
